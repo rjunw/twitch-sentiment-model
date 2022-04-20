@@ -1,7 +1,7 @@
 # FeelsAmazingMan: Combining static and contextual representations to improve Twitch sentiment analysis
 ## Authors: Ryan Jun Wang, Feifei Li, Victor Trinh
 
-The `.ipynb` notebooks can be used to train our models on your own machines. The Kobs 21 data set can be found [here](https://github.com/konstantinkobs/emote-controlled/blob/master/data/labeled_dataset.csv).
+The `.ipynb` notebooks can be used to train our models on your own machines. The Kobs 20 data set can be found [here](https://github.com/konstantinkobs/emote-controlled/blob/master/data/labeled_dataset.csv).
 
 ## Dependencies
 
@@ -14,6 +14,15 @@ gensim
 ```
 
 ## Current Results
+
+ | Model | Accuracy | Macro F-1 |
+ | ----- | -------- | --------- |
+ | Kobs 20 Sentence CNN | 63.8% | 62.6% |
+ | Dolin 21 Bi-gram Random Forest | 71.2% | N/A |
+ | Fully-connected MLP + Labeled-Word2Vec (Batch Size 64)  | 60.3% | 45.2% |
+ | BERT (Batch Size 64) | 73.9% | 68.1% |
+ | BERT + Labeled-Word2Vec (Batch Size 64) | **75.7**% | **68.7**% |
+ | BERT + Labeled-Word2Vec + GRU (Batch Size 64, Weight decay 0.1) | (**more stable**) **74.0**% | **68.0**%  |
 
 Best weights: https://drive.google.com/drive/folders/14NzJWjnIOebhR5GvZAITDAPBLXlrhC6G?usp=sharing (best from 50eps base BERT cased; ~75.7% validation accuracy using 768-dim Word2Vec summed with BERT `[CLS]` token)
 
