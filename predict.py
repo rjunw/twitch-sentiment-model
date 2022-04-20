@@ -4,6 +4,7 @@ import torch
 import torch.nn as nn
 from transformers import AutoTokenizer, BertModel
 from gensim.models import Word2Vec
+import os
 
 class BertForSentenceClassification(BertModel):
     def __init__(self, config, use_dropout, embed_size, dropout = 0.5):
@@ -53,41 +54,50 @@ def predict(inputs, inputs_w2v, tokenizer, model):
                    w2v_embeds = inputs_w2v)
     output = nn.functional.softmax(output[0], dim = 1).detach().numpy()
     output = output.argmax(axis = 1)
+    
+  
   return output
 
-# recap args
-tokenizer = str(sys.argv[1]).replace('\\', '/')
-model_path = str(sys.argv[2]).replace('\\', '/')
-w2v_path = str(sys.argv[3]).replace('\\', '/')
-#config = str(sys.argv[4]).replace('\\', '/')
-message = str(sys.argv[4]).replace('\\', '/')
+
 
 
 #print(f"tokenizer: {tokenizer} \nweights: {model_path} \nmessage: {message}")
 
 
-# data
-df = pd.DataFrame({'msgs' : [message]})
+def setup_w2v(messages_df): 
+  # recap args
+  w2v_path = os.path.join(os.getcwd(), "w2v_labeled.model")
 
-# load and train w2v then get embeds
-w2v_model = Word2Vec.load(w2v_path)
-messages_w2v = [message.split(' ') for message in df.msgs] # format messages
-w2v_model.build_vocab(messages_w2v, update = True) # update w2v vocab
-w2v_model.train(messages_w2v, total_examples = len(messages_w2v), epochs = w2v_model.epochs) # train on new messages
-messages_w2v = torch.Tensor([w2v_model.wv[message].sum(axis = 0) for message in messages_w2v]) # get w2v embeds
+  # load and train w2v then get embeds
+  w2v_model = Word2Vec.load(w2v_path) # need to recall this after each prediction
+  messages_w2v = [message.split(' ') for message in messages_df.msgs] # format messages
+  w2v_model.build_vocab(messages_w2v, update = True) # update w2v vocab
+  w2v_model.train(messages_w2v, total_examples = len(messages_w2v), epochs = w2v_model.epochs) # train on new messages
+  messages_w2v = torch.Tensor([w2v_model.wv[message].sum(axis = 0) for message in messages_w2v]) # get w2v embeds
 
-# load model
-model = BertForSentenceClassification.from_pretrained(model_path, use_dropout = False, embed_size = messages_w2v[-1])
+  return messages_w2v, messages_w2v[-1]
 
-bert_tokenizer = AutoTokenizer.from_pretrained(tokenizer)
+def setup_model(messages_df, embed_size):
+  tokenizer = "bert-base-cased"
+  model_path = os.path.join(os.getcwd(), "model") 
 
-# prediction
-pred = predict(df.msgs, messages_w2v, bert_tokenizer, model)
+  # load model
+  model = BertForSentenceClassification.from_pretrained(model_path, use_dropout = False, embed_size = embed_size)
+  bert_tokenizer = AutoTokenizer.from_pretrained(tokenizer)
 
-#print(pred)
-if pred == 0:
-	print("Negative")
-elif pred == 1:
-	print("Neutral")
-else:
-	print("Positive")
+  return bert_tokenizer, model
+
+if __name__ == "__main__":
+  """
+  https://drive.google.com/drive/folders/16v-xz-IHzthTfUhZWmmK664HLRGdiXzE 
+  https://drive.google.com/drive/folders/1P6werqtDGQAzlAUuUajNA5MfanNpR8lx 
+  """
+
+  messages = ["omegalul"]
+
+  messages_df = pd.DataFrame({'msgs' : messages}) # messages is an array
+  messages_w2v, embed_size = setup_w2v(messages_df)
+  bert_tokenizer, model = setup_model(messages, embed_size)
+
+  print(predict(messages_df.msgs, messages_w2v, bert_tokenizer, model))
+  messages_w2v, embed_size = setup_w2v(messages_df)
