@@ -1,5 +1,7 @@
-# Twitch Sentiment Model
+# FeelsAmazingMan: Combining static and contextual representations to improve Twitch sentiment analysis
 ## Authors: Ryan Jun Wang, Feifei Li, Victor Trinh
+
+The `.ipynb` notebooks can be used to train our models on your own machines.
 
 Current best weights: https://drive.google.com/drive/folders/14NzJWjnIOebhR5GvZAITDAPBLXlrhC6G?usp=sharing (best from 50eps base BERT cased; ~75.7% validation accuracy using 768-dim Word2Vec summed with BERT `[CLS]` token)
 
