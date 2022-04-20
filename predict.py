@@ -58,11 +58,7 @@ def predict(inputs, inputs_w2v, tokenizer, model):
   
   return output
 
-
-
-
 #print(f"tokenizer: {tokenizer} \nweights: {model_path} \nmessage: {message}")
-
 
 def setup_w2v(messages_df): 
   # recap args
@@ -89,15 +85,16 @@ def setup_model(messages_df, embed_size):
 
 if __name__ == "__main__":
   """
-  https://drive.google.com/drive/folders/16v-xz-IHzthTfUhZWmmK664HLRGdiXzE 
-  https://drive.google.com/drive/folders/1P6werqtDGQAzlAUuUajNA5MfanNpR8lx 
+  BERT: https://drive.google.com/drive/folders/16v-xz-IHzthTfUhZWmmK664HLRGdiXzE 
+  W2V: https://drive.google.com/drive/folders/1P6werqtDGQAzlAUuUajNA5MfanNpR8lx 
+
+  USAGE: Replace your own messages here and run python3 predict.py
   """
-
-  messages = ["omegalul"]
-
+  messages = ["so bad", "maybe", "omegalul"]
   messages_df = pd.DataFrame({'msgs' : messages}) # messages is an array
   messages_w2v, embed_size = setup_w2v(messages_df)
   bert_tokenizer, model = setup_model(messages, embed_size)
 
-  print(predict(messages_df.msgs, messages_w2v, bert_tokenizer, model))
-  messages_w2v, embed_size = setup_w2v(messages_df)
+  print("Outputs:", predict(messages_df.msgs, messages_w2v, bert_tokenizer, model))
+  print("KEY: Negative Sentiment: 0-0.5, Neutral Sentiment: 0.5-1.5, Positive Sentiment: 1.5-2")
+  
