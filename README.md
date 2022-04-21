@@ -29,3 +29,6 @@ Best weights: https://drive.google.com/drive/folders/14NzJWjnIOebhR5GvZAITDAPBLX
 * `predict.py` should be run in the same file structure as the google drive, refer to the instructions in the `main` block to run
 
 For a sample product using our model, check out this [repo](https://github.com/Victor-Trinh/twitch-sentiment-webapp)
+
+## Contact
+You can contact us at ryanjun.wang[at]mail.utoronto.ca, ff.li[at]mail.utoronto.ca, and v.trinh[at]mail.utoronto.ca
