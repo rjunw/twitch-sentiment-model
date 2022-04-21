@@ -1,7 +1,7 @@
 # FeelsAmazingMan: Combining static and contextual representations to improve Twitch sentiment analysis
 ## Authors: Ryan Jun Wang, Feifei Li, Victor Trinh
 
-The `.ipynb` notebooks can be used to train our models on your own machines. The Kobs 20 data set can be found [here](https://github.com/konstantinkobs/emote-controlled/blob/master/data/labeled_dataset.csv); the emote augmentation uses the `emote-average.tsv` file found [here](https://github.com/konstantinkobs/emote-controlled/blob/master/lexica/emote_average.tsv).
+The `.ipynb` notebooks can be used to train our models on your own machines. The Kobs 20 data set can be found [here](https://github.com/konstantinkobs/emote-controlled/blob/master/data/labeled_dataset.csv); the emote augmentation uses the `emote-average.tsv` file found [here](https://github.com/konstantinkobs/emote-controlled/blob/master/lexica/emote_average.tsv). Download and put these into a data folder in the same directory as the notebooks.
 
 ## Dependencies
 
